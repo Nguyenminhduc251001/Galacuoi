@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" href="469500530_3924286264560250_6825107353805037901_n.jpg" type="image/x-icon">
+    <title>Gala cười FC</title>
+    <style>
+       /* Tổng thể body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Tông nền nhẹ nhàng */
+}
+
+/* Header chung */
+.header-content {
+    text-align: center;
+    padding: 20px;
+    background-color: #007bff; /* Màu xanh đậm */
+    color: white;
+}
+
+.header-content h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-content nav a {
+    text-decoration: none;
+    margin: 0 15px;
+    color: white; /* Font trắng nổi bật */
+    font-weight: bold;
+}
+
+.header-content nav a:hover {
+    text-decoration: underline;
+}
+
+/* Nút Đăng Ký */
+#showPopupButton {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+#showPopupButton:hover {
+    background-color: #0056b3;
+}
+
+
+input[type="checkbox"] {
+    float: right; /* Checkbox nằm bên phải */
+}
+
+input, select, textarea {
+    width: auto;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+button[type="reset"] {
+    background-color: #ffc107;
+    color: black;
+}
+
+button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Phần thông tin nhân sự */
+.info-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Khoảng cách giữa các phần tử */
+    justify-content: center; /* Căn giữa */
+}
+
+.info-section {
+    flex: 1 1 calc(50% - 20px); /* Chiều rộng ô */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.info-section:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05); /* Hiệu ứng hover */
+}
+
+.info-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.info-section h3 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.info-section p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Tiêu đề nhân sự */
+#nhan-su h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .info-section {
+        flex: 1 1 100%; /* Chiếm toàn bộ chiều rộng màn hình nhỏ */
+    }
+}
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-image">
+            <img src="488144214_1123676119514062_2429404881719852638_n.jpg" alt="Ảnh header">
+        </div>
+        <div class="header-content">
+            <h1>Chào mừng đến với đội bóng Gala cười FC!</h1>
+            <nav>
+                <a href="#gioi-thieu">Giới thiệu</a>
+                <a href="#nhan-su">Nhân sự</a>
+                <a href="#hinh-anh">Hình ảnh</a>
+                <a href="#video">Video</a>
+                <a href="#lien-he">Liên hệ</a>
+                <a href="#" id="open-popup">Sản phẩm nhãn hàng</a>
+            </nav>
+        </div>
+    
+        <!-- Overlay -->
+        <div class="overlay"></div>
+    
+        <!-- Popup Form -->
+        <div class="popup" id="product-popup">
+            <div class="popup-header">
+                <h2>Thêm mới sản phẩm</h2>
+                <button class="close-popup">&times;</button>
+            </div>
+            <div class="popup-content">
+                <form id="productForm">
+                    <label for="productType">Loại sản phẩm:</label>
+                    <select id="productType" name="productType">
+                        <option value="">---------</option>
+                        <option value="Giày">Giày</option>
+                        <option value="Bóng">Bóng</option>
+                        <option value="Quần áo">Quần áo</option>
+                    </select>
+    
+                    <label for="productCode">Mã sản phẩm: (*)</label>
+                    <input type="text" id="productCode" name="productCode" required>
+    
+                    <label for="productName">Tên sản phẩm: (*)</label>
+                    <input type="text" id="productName" name="productName" required>
+    
+                    <label for="productColor">Màu:</label>
+                    <input type="color" id="productColor" name="productColor">
+    
+                    <label for="manufactureDate">Ngày nhập hàng: (*)</label>
+                    <input type="date" id="manufactureDate" name="manufactureDate" required>
+    
+                    <label for="productImage">Ảnh sản phẩm:</label>
+                    <input type="file" id="productImage" name="productImage">
+    
+                    <label for="importPrice">Giá nhập về:</label>
+                    <input type="number" id="importPrice" name="importPrice" required>
+    
+                    <label for="salePrice">Giá bán ra:</label>
+                    <input type="number" id="salePrice" name="salePrice" required>
+    
+                    <label for="discountPrice">Giảm giá:</label>
+                    <input type="number" id="discountPrice" name="discountPrice">
+    
+                    <h2 style="text-align: center;">Form Gắn nhãn sản phẩm</h2>
+                    <table>
+                        <tr>
+                            <th>Loại nhãn/Quà tặng</th>
+                            <th>Chọn</th>
+                        </tr>
+                        <tr>
+                            <td>Giày Thượng Đình</td>
+                            <td><input type="checkbox" id="GiàyLabel" name="productLabel" value="Giày"></td>
+                        </tr>
+                        <tr>
+                            <td>Tất bóng đá</td>
+                            <td><input type="checkbox" id="soccerSocks" name="giftOption" value="soccerSocks"></td>
+                        </tr>
+                        <tr>
+                            <td>Dây giày dự phòng</td>
+                            <td><input type="checkbox" id="Shoelace" name="giftOption" value="Shoelace"></td>
+                        </tr>
+                    </table>
+    
+                    <button type="reset">Nhập lại</button>
+                    <button type="submit">Lưu</button>
+                </form>
+            </div>
+        </div>
+    
+        <script>
+            $(document).ready(function () {
+                $("#open-popup").click(function () {
+                    $(".overlay").fadeIn();
+                    $("#product-popup").fadeIn();
+                });
+    
+                $("#close-popup, .overlay").click(function () {
+                    $(".overlay").fadeOut();
+                    $("#product-popup").fadeOut();
+                });
+            });
+        </script>
+    </header>
+
+    <section id="gioi-thieu">
+        <h2>Giới thiệu</h2>
+        <p>Gala cười FC là đội bóng mang tinh thần vui vẻ, gắn kết cộng đồng và đam mê trái bóng tròn.</p>
+    </section>
+    
+    <section id="nhan-su">
+        <h1>Nhân sự chủ chốt</h1>
+    
+        <!-- Container chứa tất cả các phần thông tin -->
+        <div class="info-container">
+            <!-- Nhân sự: Trần Lâm Quang -->
+            <div class="info-section" onclick="showForm('form1')">
+                <h3>Trần Lâm Quang</h3>
+                <p>Chủ tịch đội bóng, dẫn dắt đội bóng với chiến thuật sáng tạo.</p>
+                <img src="TranLamQuang.jpg" alt="Ảnh Trần Lâm Quang">
+            </div>
+    
+            <!-- Nhân sự: Ngô Thanh Sơn -->
+            <div class="info-section" onclick="showForm('form2')">
+                <h3>Ngô Thanh Sơn</h3>
+                <p>Tiền vệ số 1, nguồn cảm hứng và dẫn dắt đội trong mọi trận đấu.</p>
+                <img src="NgothanhSon.jpg" alt="Ảnh Ngô Thanh Sơn">
+            </div>
+    
+            <!-- Nhân sự: Nguyễn Quang Huy -->
+            <div class="info-section" onclick="showForm('form3')">
+                <h3>Nguyễn Quang Huy</h3>
+                <p>Hậu vệ chắc chắn, bảo vệ khung thành khỏi mọi nguy hiểm.</p>
+                <img src="NguyenQuangHuy.jpg" alt="Ảnh Nguyễn Quang Huy">
+            </div>
+    
+            <!-- Nhân sự: Nguyễn Minh Đức -->
+            <div class="info-section" onclick="showForm('form4')">
+                <h3>Nguyễn Minh Đức</h3>
+                <p>Trưởng ban hậu cần kiêm giám đốc Media.</p>
+                <img src="NguyếnMinhDuc.jpg" alt="Ảnh Nguyễn Minh Đức">
+            </div>
+        </div>
+    </section>
+    
+    
+<section id="hinh-anh">
+    <h2>Hình ảnh</h2>
+    <div class="image-container">
+        <img src="IMG_20250416_154620.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+        <img src="IMG_20250416_154548.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+        <img src="IMG_20250416_154615.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+        <img src="IMG_20250416_154616.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+        <img src="IMG_20250416_154617.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+        <img src="IMG_20250416_154619.jpg" alt="Hình ảnh đội bóng Gala cười FC">
+    </div>
+</section>
+
+<section id="video">
+    <h2>Video</h2>
+    <div class="video-container">
+        <!-- Video 1 -->
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7489506215932726534"
+            data-video-id="7489506215932726534" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+                Mình chưa vào sân trận này 🧤 Vì vẫn còn thiếu tự tin với bước 1 🥲 Nhưng đang học hỏi để trở lại mạnh hơn! 💪 
+                <a title="đứcđábanh" target="_blank" href="https://www.tiktok.com/tag/%C4%91%E1%BB%A9c%C4%91%C3%A1banh">#ĐứcĐáBanh</a> 
+                <a title="footballlife" target="_blank" href="https://www.tiktok.com/tag/footballlife">#FootballLife</a> 
+                <a title="san7" target="_blank" href="https://www.tiktok.com/tag/san7">#San7</a> 
+                <a title="tiktokbongda" target="_blank" href="https://www.tiktok.com/tag/tiktokbongda">#TikTokBongDa</a> 
+                <a target="_blank" title="♬ Cute - Aurel Surya Lie" href="https://www.tiktok.com/music/Cute-7136445672676411393">♬ Cute - Aurel Surya Lie</a>
+            </section>
+        </blockquote>
+
+        <!-- Video 2 -->
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7488333648660319543" 
+            data-video-id="7488333648660319543" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+            </section>
+        </blockquote>
+
+        <!-- Video 3 -->
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7488010652330511621" 
+            data-video-id="7488010652330511621" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+            </section>
+        </blockquote>
+
+        <!-- Video 4 -->
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7485746379646586119" 
+            data-video-id="7485746379646586119" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+            </section>
+        </blockquote>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7471540518867193095" 
+            data-video-id="7471540518867193095" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+            </section>
+        </blockquote>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ducdabanh2510/video/7470790267474300178" 
+            data-video-id="7470790267474300178" style="max-width: 605px; min-width: 325px;">
+            <section>
+                <a target="_blank" title="@ducdabanh2510" href="https://www.tiktok.com/@ducdabanh2510">@ducdabanh2510</a>
+            </section>
+        </blockquote>
+    </div>
+    <script async src="https://www.tiktok.com/embed.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* CSS cho form popup */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            width: 80%;
+            max-width: 400px;
+        }
+        .popup button.close-popup {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            float: right;
+            cursor: pointer;
+        }
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .popup form input, .popup form label {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .popup form button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .popup form button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* CSS cho popup */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup input, .popup label {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .popup button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #2980b9;
+        }
+
+        .popup .close-popup {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+   <!-- Nút Đăng Ký -->
+   <button id="showPopupButton">Đăng ký thành viên</button>
+
+   <!-- Overlay -->
+   <div class="popup-overlay"></div>
+
+   <!-- Popup -->
+   <div class="popup">
+       <div class="popup-header">
+           <h2>Đăng ký thành viên</h2>
+           <button class="close-popup">&times;</button>
+       </div>
+       <div class="popup-content">
+           <form id="registrationForm">
+               <label for="fullName">Họ và Tên:</label>
+               <input type="text" id="fullName" placeholder="Nhập họ và tên" required>
+               <span id="errorFullName" class="error"></span>
+
+               <label for="dob">Ngày sinh:</label>
+               <input type="date" id="dob" required>
+               <span id="errorDob" class="error"></span>
+
+               <label for="address">Địa chỉ:</label>
+               <input type="text" id="address" placeholder="Nhập địa chỉ" required>
+               <span id="errorAddress" class="error"></span>
+
+               <label for="job">Nghề nghiệp:</label>
+               <input type="text" id="job" placeholder="Nhập nghề nghiệp" required>
+               <span id="errorJob" class="error"></span>
+
+               <label>Biết chơi bóng không:</label>
+               <div>
+                   <input type="radio" id="playYes" name="playBall" value="Có"> Có
+                   <input type="radio" id="playNo" name="playBall" value="Không"> Không
+               </div>
+               <span id="errorPlayBall" class="error"></span>
+
+               <label>Có mong muốn gắn bó lâu dài không:</label>
+               <div>
+                   <input type="radio" id="longTermYes" name="longTerm" value="Có"> Có
+                   <input type="radio" id="longTermNo" name="longTerm" value="Không"> Không
+               </div>
+               <span id="errorLongTerm" class="error"></span>
+
+               <button type="button" id="submitForm">Đăng ký</button>
+           </form>
+       </div>
+   </div>
+
+   <script>
+       $(document).ready(function() {
+           // Hiển thị popup khi nhấn nút "Đăng ký thành viên"
+           $("#showPopupButton").click(function() {
+               $(".popup-overlay").fadeIn();
+               $(".popup").fadeIn();
+           });
+
+           // Đóng popup khi nhấn vào nút "X" hoặc nền overlay
+           $(".close-popup, .popup-overlay").click(function() {
+               $(".popup-overlay").fadeOut();
+               $(".popup").fadeOut();
+           });
+
+           // Xử lý sự kiện nhấn nút "Đăng ký" trong form
+           $("#submitForm").click(function() {
+               let isValid = true;
+
+               // Kiểm tra dữ liệu nhập
+               $(".error").text(""); // Xóa thông báo lỗi cũ
+
+               if ($("#fullName").val().trim() === "") {
+                   $("#errorFullName").text("Họ và Tên không được để trống.");
+                   isValid = false;
+               }
+               if ($("#dob").val().trim() === "") {
+                   $("#errorDob").text("Ngày sinh không được để trống.");
+                   isValid = false;
+               }
+               if ($("#address").val().trim() === "") {
+                   $("#errorAddress").text("Địa chỉ không được để trống.");
+                   isValid = false;
+               }
+               if ($("#job").val().trim() === "") {
+                   $("#errorJob").text("Nghề nghiệp không được để trống.");
+                   isValid = false;
+               }
+               if (!$("input[name='playBall']:checked").val()) {
+                   $("#errorPlayBall").text("Vui lòng chọn biết chơi bóng không.");
+                   isValid = false;
+               }
+               if (!$("input[name='longTerm']:checked").val()) {
+                   $("#errorLongTerm").text("Vui lòng chọn mong muốn gắn bó lâu dài.");
+                   isValid = false;
+               }
+
+               // Hiển thị thông báo nếu hợp lệ
+               if (isValid) {
+                   alert("Đăng ký thành công!");
+                   $(".popup-overlay").fadeOut();
+                   $(".popup").fadeOut();
+               }
+           });
+       });
+   </script>
+
+<p>Liên hệ</p>
+    
+<p id="phone">Số điện thoại: 0379646248</p>
+    
+<p id="address">Địa chỉ: Công viên vườn Hoa Lý Tự Trọng, phường Thuỵ Khuyê, quận Tây Hồ, Thành phố Hà Nội, Việt Nam</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Gala cười FC. Tất cả các quyền được bảo lưu.</p>
+    </footer>
+</body>
+</html>
